@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String    @unique
+  email     String    @unique
+  password  String
+  profile   Profile?  @relation(fields: [profileId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  profileId String?
+}
+
+model Profile {
+  id         String     @id @default(uuid())
+  name       String
+  birth_date String
+  photo      String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?
+  deletedAt  DateTime?
+  User       User[]
+  Job        Job[]
+  Project    Project[]
+  Academic   Academic[]
+}
+
+enum JobEnum {
+  FREELANCE
+  FULLTIME
+  PARTTIME
+}
+
+model Job {
+  id          String    @id @default(uuid())
+  title       String
+  company     String?
+  description String?
+  position    String?
+  logo        String?
+  startJob    DateTime?
+  endJob      DateTime?
+  profileId   String?
+  status      JobEnum?
+  profile     Profile?  @relation(fields: [profileId], references: [id])
+  isCurrent   Boolean?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime?
+  deletedAt   DateTime?
+  Project     Project[]
+}
+
+enum RepoEnum {
+  BITBUCKET
+  GITLAB
+  GITHUB
+}
+
+model Project {
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+  technologies Json?
+  screenshots  String?
+  url          String?
+  repoUrl      String?
+  repoName     RepoEnum?
+  profileId    String?
+  profile      Profile?  @relation(fields: [profileId], references: [id])
+  jobId        String?
+  job          Job?      @relation(fields: [jobId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+  deletedAt    DateTime?
+}
+
+model Academic {
+  id         String    @id @default(uuid())
+  school     String
+  faculty    String
+  degree     String
+  gpa        Decimal
+  startStudy DateTime?
+  endStudy   DateTime?
+  logo       String?
+  profileId  String?
+  profile    Profile?  @relation(fields: [profileId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime?
+  deletedAt  DateTime?
+}
