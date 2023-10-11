@@ -3,10 +3,20 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
+import { PrismaModule } from './prisma/prisma.module';
+import { ProjectModule } from './project/project.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [],
+  imports: [PrismaModule, ProjectModule, UserModule],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  providers: [
+    AppService,
+    UserService,
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: TransformationInterceptor,
+    // },
+  ],
 })
 export class AppModule {}
