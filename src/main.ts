@@ -9,9 +9,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('Portofolio')
-    .setDescription('Portofolio documentation API')
+    .setTitle('Portfolio')
+    .setDescription('Portfolio documentation API')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
