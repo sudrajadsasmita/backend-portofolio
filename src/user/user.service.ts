@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import * as os from 'os';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   async create(createUserDto: CreateUserDto) {
     const hashPassword: string = await bcrypt.hash(createUserDto.password, 10);
     return await this.prisma.user.create({
@@ -37,9 +38,12 @@ export class UserService {
         profile: true,
       },
     });
+    if (!users) {
+      throw new NotFoundException();
+    }
     users.forEach((user) => {
       if (user.profile && user.profile.photo) {
-        user.profile.photo = `${process.env.BASE_URL}/api/user-profile/${user.profile.photo}`;
+        user.profile.photo = `${os.hostname}:${process.env.PORT}/api/user-profile/${user.profile.photo}`;
       }
     });
     return users;
@@ -61,10 +65,13 @@ export class UserService {
         profile: true,
       },
     });
+    if (!user) {
+      throw new NotFoundException(`No user found for id: ${id}`);
+    }
     user!.profile!.photo =
       user!.profile!.photo == null
         ? null
-        : `${process.env.BASE_URL}/api/user-profile/${user.profile.photo}`;
+        : `${os.hostname}:${process.env.PORT}/api/user-profile/${user.profile.photo}`;
     return user;
   }
 

@@ -6,12 +6,14 @@ import {
   MinLength,
   IsNotEmpty,
 } from 'class-validator';
+import { IsUniqueUsername } from 'src/decorator/is_unique.decorator';
 import { Match } from 'src/decorator/match.decorator';
 
 export class CreateUserDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @IsUniqueUsername({ message: 'Username is not unique' })
   username: string;
 
   @ApiProperty()

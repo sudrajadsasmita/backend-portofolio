@@ -17,7 +17,7 @@ import { TransformationInterceptor } from 'src/interceptor/transform.interceptor
 import { ResponseMessage } from 'src/decorator/response_message.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('user')
+@Controller('api/user')
 @ApiTags('user')
 @UseInterceptors(TransformationInterceptor)
 export class UserController {
