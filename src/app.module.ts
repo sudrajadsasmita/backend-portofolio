@@ -8,9 +8,17 @@ import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
+import { AcademyModule } from './academy/academy.module';
 
 @Module({
-  imports: [PrismaModule, ProjectModule, UserModule, AuthModule, FileModule],
+  imports: [
+    PrismaModule,
+    ProjectModule,
+    UserModule,
+    AuthModule,
+    FileModule,
+    AcademyModule,
+  ],
   controllers: [AppController, UserController],
   providers: [
     AppService,
@@ -21,4 +29,4 @@ import { FileModule } from './file/file.module';
     // },
   ],
 })
-export class AppModule { }
+export class AppModule {}

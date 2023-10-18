@@ -47,7 +47,7 @@ export class ProjectService {
       project!.screenshots =
         project!.screenshots == null
           ? null
-          : `http://localhost:${process.env.PORT}/file/${project?.screenshots}/project`;
+          : `http://localhost:${process.env.PORT}/file/${project?.id}/project`;
     });
     return projects;
   }
@@ -61,7 +61,7 @@ export class ProjectService {
     project!.screenshots =
       project!.screenshots == null
         ? null
-        : `http://localhost:${process.env.PORT}/file/${project?.screenshots}/project`;
+        : `http://localhost:${process.env.PORT}/file/${project?.id}/project`;
     return project;
   }
 
@@ -72,6 +72,7 @@ export class ProjectService {
       },
       data: {
         screenshots: fileName,
+        updatedAt: new Date(Date.now()),
       },
     });
   }
@@ -88,6 +89,7 @@ export class ProjectService {
         url: updateProjectDto.url,
         repoUrl: updateProjectDto.repoUrl,
         repoName: updateProjectDto.repoName,
+        updatedAt: new Date(Date.now()),
       },
     });
   }

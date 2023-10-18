@@ -18,4 +18,10 @@ export class FileController {
   async readProjectScreenshot(@Param('projectId') userId: string, @Res() res) {
     return this.fileService.readProjectScreenshot(userId, res);
   }
+  @HttpCode(201)
+  @Get(':academyId/academy')
+  @Header('Content-Type', 'image/png')
+  async readAcademyLogo(@Param('academyId') academyId: string, @Res() res) {
+    return this.fileService.readAcademyLogo(academyId, res);
+  }
 }

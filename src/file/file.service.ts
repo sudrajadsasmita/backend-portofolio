@@ -38,4 +38,15 @@ export class FileService {
     );
     return file.pipe(res);
   }
+  async readAcademyLogo(academyId: string, res: any) {
+    const project = await this.prisma.project.findUnique({
+      where: {
+        id: academyId,
+      },
+    });
+    const file = createReadStream(
+      join(process.cwd(), `uploads/profiles/${project.screenshots}`),
+    );
+    return file.pipe(res);
+  }
 }
