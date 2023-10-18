@@ -8,6 +8,9 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
+  HttpException,
+  HttpStatus,
+  UploadedFile,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProjectService } from './project.service';
@@ -17,6 +20,10 @@ import { User } from 'src/decorator/user.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TransformationInterceptor } from 'src/interceptor/transform.interceptor';
 import { ResponseMessage } from 'src/decorator/response_message.decorator';
+import { ApiFile } from 'src/decorator/file_upload.decorator';
+import { extname } from 'path';
+import { diskStorage } from 'multer';
+import { Helper } from 'src/helpers/helper';
 
 @Controller('api/project')
 @ApiTags('project')
@@ -28,8 +35,8 @@ export class ProjectController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ResponseMessage('Create data successfully...')
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectService.create(createProjectDto);
+  create(@Body() createProjectDto: CreateProjectDto, @User() user) {
+    return this.projectService.create(createProjectDto, user);
   }
 
   @Get()
@@ -46,6 +53,42 @@ export class ProjectController {
   @ResponseMessage('Fetch data successfully...')
   findOne(@Param('id') id: string) {
     return this.projectService.findOne(id);
+  }
+
+  @Patch(':id/screenshot')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ResponseMessage('Upload data successfully...')
+  @ApiFile('file', true, {
+    limits: {
+      fileSize: 1024 * 1024 * 4,
+    },
+    // Check the mimetypes to allow for upload
+    fileFilter: (req: any, file: any, cb: any) => {
+      if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+        // Allow storage of file
+        cb(null, true);
+      } else {
+        // Reject file
+        cb(
+          new HttpException(
+            `Unsupported file type ${extname(file.originalname)}`,
+            HttpStatus.BAD_REQUEST,
+          ),
+          false,
+        );
+      }
+    },
+    storage: diskStorage({
+      destination: './uploads/projects',
+      filename: Helper.customFileName,
+    }),
+  })
+  uploadPhoto(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: string,
+  ) {
+    return this.projectService.uploadScreenshot(file.filename, id);
   }
 
   @Patch(':id')

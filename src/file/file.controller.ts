@@ -12,4 +12,10 @@ export class FileController {
   async readProfile(@Param('userId') userId: string, @Res() res) {
     return this.fileService.readProfile(userId, res);
   }
+  @HttpCode(201)
+  @Get(':projectId/project')
+  @Header('Content-Type', 'image/png')
+  async readProjectScreenshot(@Param('projectId') userId: string, @Res() res) {
+    return this.fileService.readProjectScreenshot(userId, res);
+  }
 }

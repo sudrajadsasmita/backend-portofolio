@@ -27,4 +27,15 @@ export class FileService {
     );
     return file.pipe(res);
   }
+  async readProjectScreenshot(projectId: string, res: any) {
+    const project = await this.prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+    });
+    const file = createReadStream(
+      join(process.cwd(), `uploads/profiles/${project.screenshots}`),
+    );
+    return file.pipe(res);
+  }
 }
