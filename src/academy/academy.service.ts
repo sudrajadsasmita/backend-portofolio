@@ -51,7 +51,7 @@ export class AcademyService {
     return academy;
   }
 
-  async uploadLogo(logo: string, id: string) {
+  async uploadAcademyLogo(logo: string, id: string) {
     const academic = await this.prisma.academic.update({
       where: {
         id: id,

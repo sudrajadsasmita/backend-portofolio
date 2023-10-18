@@ -24,4 +24,10 @@ export class FileController {
   async readAcademyLogo(@Param('academyId') academyId: string, @Res() res) {
     return this.fileService.readAcademyLogo(academyId, res);
   }
+  @HttpCode(201)
+  @Get(':jobId/job')
+  @Header('Content-Type', 'image/png')
+  async readJobLogo(@Param('jobId') jobId: string, @Res() res) {
+    return this.fileService.readJobLogo(jobId, res);
+  }
 }

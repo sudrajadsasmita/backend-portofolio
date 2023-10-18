@@ -39,13 +39,24 @@ export class FileService {
     return file.pipe(res);
   }
   async readAcademyLogo(academyId: string, res: any) {
-    const project = await this.prisma.project.findUnique({
+    const academy = await this.prisma.academic.findUnique({
       where: {
         id: academyId,
       },
     });
     const file = createReadStream(
-      join(process.cwd(), `uploads/profiles/${project.screenshots}`),
+      join(process.cwd(), `uploads/profiles/${academy.logo}`),
+    );
+    return file.pipe(res);
+  }
+  async readJobLogo(jobId: string, res: any) {
+    const job = await this.prisma.job.findUnique({
+      where: {
+        id: jobId,
+      },
+    });
+    const file = createReadStream(
+      join(process.cwd(), `uploads/profiles/${job.logo}`),
     );
     return file.pipe(res);
   }

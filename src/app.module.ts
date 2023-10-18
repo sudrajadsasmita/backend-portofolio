@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
 import { AcademyModule } from './academy/academy.module';
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AcademyModule } from './academy/academy.module';
     AuthModule,
     FileModule,
     AcademyModule,
+    JobModule,
   ],
   controllers: [AppController, UserController],
   providers: [
