@@ -1,3 +1,1 @@
-export class CreateProjectDto {
-        
-}
+export class CreateProjectDto {}

@@ -7,7 +7,9 @@ import * as os from 'os';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {
+    this.prisma = new PrismaService();
+  }
   async create(createUserDto: CreateUserDto) {
     const hashPassword: string = await bcrypt.hash(createUserDto.password, 10);
     return await this.prisma.user.create({
@@ -43,7 +45,7 @@ export class UserService {
     }
     users.forEach((user) => {
       if (user.profile && user.profile.photo) {
-        user.profile.photo = `${os.hostname}:${process.env.PORT}/api/user-profile/${user.profile.photo}`;
+        user.profile.photo = `localhost:${process.env.PORT}/file/${user.id}/profile`;
       }
     });
     return users;
@@ -71,14 +73,40 @@ export class UserService {
     user!.profile!.photo =
       user!.profile!.photo == null
         ? null
-        : `${os.hostname}:${process.env.PORT}/api/user-profile/${user.profile.photo}`;
+        : `${os.hostname}:${process.env.PORT}/file/${user.id}/profile`;
     return user;
+  }
+
+  async uploadPhoto(fileName: string, userId: string) {
+    return await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      select: {
+        profile: true,
+      },
+      data: {
+        profile: {
+          update: {
+            photo: fileName,
+            updatedAt: new Date(Date.now()),
+          },
+        },
+      },
+    });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.prisma.user.update({
-      where: {
-        id: id,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        password: false,
+        createdAt: false,
+        deletedAt: false,
+        updatedAt: false,
+        profile: true,
       },
       data: {
         email: updateUserDto.email,
@@ -86,8 +114,13 @@ export class UserService {
           update: {
             name: updateUserDto.name,
             birth_date: updateUserDto.dateBirth,
+            updatedAt: new Date(Date.now()),
           },
         },
+        updatedAt: new Date(Date.now()),
+      },
+      where: {
+        id: id,
       },
     });
   }

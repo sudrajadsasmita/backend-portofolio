@@ -7,7 +7,7 @@ import * as os from 'os';
 
 @Injectable()
 export class ProjectService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   create(createProjectDto: CreateProjectDto) {
     return 'This action adds a new project';

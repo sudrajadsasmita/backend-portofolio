@@ -22,7 +22,7 @@ import { ResponseMessage } from 'src/decorator/response_message.decorator';
 @ApiTags('project')
 @UseInterceptors(TransformationInterceptor)
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) { }
+  constructor(private readonly projectService: ProjectService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
