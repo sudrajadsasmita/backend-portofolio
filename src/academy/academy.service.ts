@@ -13,6 +13,7 @@ export class AcademyService {
       data: {
         school: createAcademyDto.school,
         faculty: createAcademyDto.faculty,
+        studyProgram: createAcademyDto.studyProgram,
         degree: createAcademyDto.degree,
         gpa: createAcademyDto.gpa,
         startStudy: new Date(createAcademyDto.startStudy),
@@ -72,6 +73,7 @@ export class AcademyService {
       data: {
         school: updateAcademyDto.school,
         faculty: updateAcademyDto.faculty,
+        studyProgram: updateAcademyDto.studyProgram,
         degree: updateAcademyDto.degree,
         gpa: updateAcademyDto.gpa,
         startStudy: new Date(updateAcademyDto.startStudy),

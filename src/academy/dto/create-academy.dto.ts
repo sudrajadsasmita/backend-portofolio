@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateAcademyDto {
   @ApiProperty()
   @IsString()
@@ -14,6 +14,11 @@ export class CreateAcademyDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  studyProgram: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   degree: string;
 
   @ApiProperty()
@@ -22,12 +27,12 @@ export class CreateAcademyDto {
   gpa: string;
 
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   startStudy: Date;
 
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   endStudy: Date;
 }

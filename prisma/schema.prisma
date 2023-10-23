@@ -86,17 +86,18 @@ model Project {
 }
 
 model Academic {
-  id         String    @id @default(uuid())
-  school     String
-  faculty    String
-  degree     String
-  gpa        Decimal
-  startStudy DateTime?
-  endStudy   DateTime?
-  logo       String?
-  profileId  String?
-  profile    Profile?  @relation(fields: [profileId], references: [id])
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
-  deletedAt  DateTime?
+  id           String    @id @default(uuid())
+  school       String
+  faculty      String
+  studyProgram String
+  degree       String
+  gpa          Decimal
+  startStudy   DateTime?
+  endStudy     DateTime?
+  logo         String?
+  profileId    String?
+  profile      Profile?  @relation(fields: [profileId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime?
+  deletedAt    DateTime?
 }
