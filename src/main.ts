@@ -8,6 +8,12 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors({
+    allowedHeaders: '*',
+    origin: '*',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Portfolio')
     .setDescription('Portfolio documentation API')
